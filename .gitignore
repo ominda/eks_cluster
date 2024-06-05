@@ -35,3 +35,5 @@ terraform.rc
 
 # Igonre terraform temporary plan file
 terra_plan
+
+.terraform.lock.*

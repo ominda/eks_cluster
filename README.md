@@ -20,7 +20,8 @@ Build a fully functional EKS cluster with HCL
     - Private NAT subnet 02 -> 172.30.30.176/28
     - EFS subnet 01 -> 172.30.30.192/28
     - EFS subnet 02 -> 172.30.30.208/28
-    - Jump Host subnet 01 -> 172.30.30.224/28
+    - Utility subnet 01 -> 172.30.30.224/28
+    - Utility subnet 02 -> 172.30.30.240/28
 
 - DB CIDR block 172.30.35.0/27
     - DB subnet 01 - 172.30.35.0/28

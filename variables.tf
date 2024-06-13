@@ -40,3 +40,27 @@ variable "v_public_ec2_count" {
 variable "v_ssh_key_pair" {
   type = string
 }
+
+
+# EKS variables
+variable "v_eks_version" {
+  type = string
+}
+
+variable "v_eks_cluster_log_types" {
+  type = list(string)
+}
+
+# variable "v_eks_addons" {
+#   type = list(string)
+# }
+
+variable "v_node_group_instance_type" {}
+
+variable "v_node_group_disk_size" {
+  type = number
+}
+
+variable "v_node_group_desired_size" {}
+variable "v_node_group_max_size" {}
+variable "v_node_group_min_size" {}

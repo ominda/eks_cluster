@@ -6,11 +6,11 @@ resource "aws_eks_cluster" "r_eks_cluster" {
   version = var.eks_version
 
   vpc_config {
-    subnet_ids = [var.control_plane_subnets[0].id, var.control_plane_subnets[1].id]
+    subnet_ids              = [var.control_plane_subnets[0].id, var.control_plane_subnets[1].id]
     endpoint_private_access = true
     endpoint_public_access  = false
     # cluster_security_group_id = aws_security_group.r_eks_cluster_sg.id
-    security_group_ids = [ aws_security_group.r_eks_cluster_sg.id ]
+    security_group_ids = [aws_security_group.r_eks_cluster_sg.id]
     # vpc_id = var.vpc_id
   }
 
@@ -35,51 +35,56 @@ resource "aws_iam_openid_connect_provider" "r_oidc_connect_provider" {
 # }
 
 resource "aws_eks_addon" "r_vpc_cni-addon" {
-  cluster_name  = aws_eks_cluster.r_eks_cluster.name
-  addon_name    = "vpc-cni"
-  addon_version = data.aws_eks_addon_version.d_eks_vpc-cni_addon.version
+  cluster_name                = aws_eks_cluster.r_eks_cluster.name
+  addon_name                  = "vpc-cni"
+  addon_version               = data.aws_eks_addon_version.d_eks_vpc-cni_addon.version
   resolve_conflicts_on_update = "PRESERVE"
-  service_account_role_arn = aws_iam_role.r_vpc_cni_role.arn
+  service_account_role_arn    = aws_iam_role.r_vpc_cni_role.arn
+  depends_on                  = [aws_eks_cluster.r_eks_cluster, aws_eks_node_group.r_eks_node_group]
 }
 
 resource "aws_eks_addon" "r_coredns-addon" {
-  cluster_name  = aws_eks_cluster.r_eks_cluster.name
-  addon_name    = "coredns"
-  addon_version = data.aws_eks_addon_version.d_eks_coredns_addon.version
-  # resolve_conflicts_on_update = "PRESERVE"
+  cluster_name                = aws_eks_cluster.r_eks_cluster.name
+  addon_name                  = "coredns"
+  addon_version               = data.aws_eks_addon_version.d_eks_coredns_addon.version
+  resolve_conflicts_on_update = "PRESERVE"
   # resolve_conflicts = "OVERWRITE"
   timeouts {
     create = "5m"
   }
+  depends_on = [aws_eks_cluster.r_eks_cluster, aws_eks_node_group.r_eks_node_group]
 }
 
 resource "aws_eks_addon" "r_kube-proxy-addon" {
-  cluster_name  = aws_eks_cluster.r_eks_cluster.name
-  addon_name    = "kube-proxy"
-  addon_version = data.aws_eks_addon_version.d_eks_kube-proxy_addon.version
+  cluster_name                = aws_eks_cluster.r_eks_cluster.name
+  addon_name                  = "kube-proxy"
+  addon_version               = data.aws_eks_addon_version.d_eks_kube-proxy_addon.version
   resolve_conflicts_on_update = "PRESERVE"
+  depends_on                  = [aws_eks_cluster.r_eks_cluster, aws_eks_node_group.r_eks_node_group]
 }
 
 resource "aws_eks_addon" "r_aws-ebs-csi-driver-addon" {
-  cluster_name  = aws_eks_cluster.r_eks_cluster.name
-  addon_name    = "aws-ebs-csi-driver"
-  addon_version = data.aws_eks_addon_version.d_eks_aws-ebs-csi-driver_addon.version
-  # resolve_conflicts_on_update = "PRESERVE"
-  service_account_role_arn = aws_iam_role.r_ebs_csi_role.arn
+  cluster_name                = aws_eks_cluster.r_eks_cluster.name
+  addon_name                  = "aws-ebs-csi-driver"
+  addon_version               = data.aws_eks_addon_version.d_eks_aws-ebs-csi-driver_addon.version
+  resolve_conflicts_on_update = "PRESERVE"
+  service_account_role_arn    = aws_iam_role.r_ebs_csi_role.arn
   timeouts {
     create = "5m"
   }
+  depends_on = [aws_eks_cluster.r_eks_cluster, aws_eks_node_group.r_eks_node_group]
 }
 
 resource "aws_eks_addon" "r_aws-efs-csi-driver-addon" {
-  cluster_name  = aws_eks_cluster.r_eks_cluster.name
-  addon_name    = "aws-efs-csi-driver"
-  addon_version = data.aws_eks_addon_version.d_eks_aws-efs-csi-driver_addon.version
-  # resolve_conflicts_on_update = "PRESERVE"
-  service_account_role_arn = aws_iam_role.r_efs_csi_role.arn
+  cluster_name                = aws_eks_cluster.r_eks_cluster.name
+  addon_name                  = "aws-efs-csi-driver"
+  addon_version               = data.aws_eks_addon_version.d_eks_aws-efs-csi-driver_addon.version
+  resolve_conflicts_on_update = "PRESERVE"
+  service_account_role_arn    = aws_iam_role.r_efs_csi_role.arn
   timeouts {
     create = "5m"
   }
+  depends_on = [aws_eks_cluster.r_eks_cluster, aws_eks_node_group.r_eks_node_group]
 }
 
 # Node Group configuration
@@ -91,10 +96,10 @@ resource "aws_eks_node_group" "r_eks_node_group" {
   subnet_ids      = [var.nodegroup_subnets[0].id, var.nodegroup_subnets[1].id]
   instance_types  = var.nodegroup_instance_type
   disk_size       = var.nodegroup_disk_size
-  ami_type = "AL2_x86_64"
+  ami_type        = "AL2_x86_64"
   # ami_type        = data.aws_ssm_parameter.eks_ami_release_version.id
-#   capacity_type   = var.eks_node_group_capacity_type
-  version         = var.eks_version
+  #   capacity_type   = var.eks_node_group_capacity_type
+  version = var.eks_version
   scaling_config {
     desired_size = var.nodegroup_desired_size
     max_size     = var.nodegroup_max_size
@@ -105,7 +110,7 @@ resource "aws_eks_node_group" "r_eks_node_group" {
     ignore_changes = [scaling_config[0].desired_size]
   }
   remote_access {
-    ec2_ssh_key = var.ssh_key
+    ec2_ssh_key               = var.ssh_key
     source_security_group_ids = [aws_security_group.r_eks_node_group_sg.id]
   }
 }

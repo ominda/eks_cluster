@@ -7,6 +7,6 @@ resource "aws_iam_role" "r_iam_instance_role" {
 
 # Create iam instance profile
 resource "aws_iam_instance_profile" "r_iam_instance_profile" {
-    name = "SSM-instance-profile"
-    role = aws_iam_role.r_iam_instance_role.name  
+  name = "SSM-instance-profile"
+  role = aws_iam_role.r_iam_instance_role.name
 }

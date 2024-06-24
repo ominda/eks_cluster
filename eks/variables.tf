@@ -5,6 +5,7 @@ variable "vpc_id" {}
 variable "eks_version" {}
 # variable "eks_addons" {}
 variable "eks_cluster_log_types" {}
+variable "lb_service_role" {}
 variable "nodegroup_subnets" {}
 variable "nodegroup_instance_type" {}
 variable "nodegroup_disk_size" {}

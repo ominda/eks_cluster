@@ -105,9 +105,9 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip 
 sudo ./aws/install
 
-# # Get and configure Helm
-# wget https://get.helm.sh/helm-v3.15.1-linux-amd64.tar.gz -O /tmp/helm-v3.15.1-linux-amd64.tar.gz
-# tar zxvf /tmp/helm-v3.15.1-linux-amd64.tar.gz -C /tmp/
-# sudo cp /tmp/linux-amd64/helm /usr/local/bin/
+# Get and configure Helm
+wget https://get.helm.sh/helm-v3.15.1-linux-amd64.tar.gz -O /tmp/helm-v3.15.1-linux-amd64.tar.gz
+tar zxvf /tmp/helm-v3.15.1-linux-amd64.tar.gz -C /tmp/
+sudo cp /tmp/linux-amd64/helm /usr/local/bin/
 
-# echo "alias h=helm" >> /home/ubuntu/.bashrc
+echo "alias h=helm" >> /home/ubuntu/.bashrc

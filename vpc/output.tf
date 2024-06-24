@@ -1,14 +1,14 @@
 output "o_vpc" {
-  value = aws_vpc.r_vpc  
+  value = aws_vpc.r_vpc
 }
 
 # Take out the public subnets
 output "o_public_subnets" {
-    value = aws_subnet.r_public_subnets
+  value = aws_subnet.r_public_subnets
 }
 
 output "o_public_lb_subnets" {
-    value = aws_subnet.r_public_lb_subnets
+  value = aws_subnet.r_public_lb_subnets
 }
 
 output "o_control_plane_subnets" {

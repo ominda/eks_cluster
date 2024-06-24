@@ -51,6 +51,10 @@ variable "v_eks_cluster_log_types" {
   type = list(string)
 }
 
+variable "v_eks_lb_service_role" {
+  type = string
+}
+
 # variable "v_eks_addons" {
 #   type = list(string)
 # }
